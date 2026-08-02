@@ -1,4 +1,5 @@
 mod lexer;
+mod parser;
 
 use std::env::args;
 use std::fs;
@@ -15,7 +16,9 @@ fn main() {
     let sourceCode = fs::read_to_string(program).expect("Unable to read file: {program}");
 
     let tokens = lexer::lex(&sourceCode);
-    for token in tokens {
+    for token in &tokens {
         lexer::printToken(&token);
     }
+
+    parser::parse(tokens);
 }

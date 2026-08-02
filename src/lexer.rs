@@ -14,6 +14,7 @@ enum TokenType {
     LeftCurlyBracket,
     RightCurlyBracket,
     Comma,
+    At,
 
     KeywordIf,
     KeywordElse,
@@ -167,6 +168,17 @@ pub fn lex(source: &str) -> Vec<Token> {
                         column += 1;
                     }
 
+                    // @ Symbol
+                    '@' => {
+                        tokens.push(Token {
+                            tokenType: TokenType::At,
+                            line: line,
+                            column: column
+                        });
+                        ptr += 1;
+                        column += 1;
+                    }
+
                     // Newline
                     '\n' => {
                         line += 1;
@@ -220,10 +232,10 @@ pub fn lex(source: &str) -> Vec<Token> {
                         }
 
                         // Keywords or identifier
-                        else if c.is_alphabetic() || c == '_' {
+                        else if c.is_alphabetic() || c == '_' || c == '*'{
                             let mut identifier = String::new();
                             while let Some(i) = source.chars().nth(ptr) {
-                                if i.is_alphabetic() || i == '_' {
+                                if i.is_alphabetic() || i == '_' || i == '*' || i.is_digit(10) {
                                     identifier.push(i);
                                     ptr += 1;
                                     column += 1;
@@ -304,6 +316,7 @@ pub fn printToken(token: &Token) {
         TokenType::LeftCurlyBracket => { println!("LEFT_CURLY_BRACKET") }
         TokenType::RightCurlyBracket => { println!("RIGHT_CURLY_BRACKET") }
         TokenType::Comma => { println!("COMMA") }
+        TokenType::At => { println!("AT") }
 
         // Keywords
         TokenType::KeywordIf => { println!("KEYWORD_IF") }
