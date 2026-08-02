@@ -1,4 +1,5 @@
-use crate::lexer::Token;
+use crate::lexer::{self, Token};
+use crate::lexer::TokenType;
 
 pub struct Statement {
 
@@ -25,12 +26,39 @@ impl Parser {
         self.index >= self.tokens.len()
     }
 
-    fn parseProgram(&mut self) {
-        let statements: Vec<Statement> = Vec::new();
+    pub fn parseProgram(&mut self) -> Program {
+        let mut statements: Vec<Statement> = Vec::new();
 
         while ! self.isAtEnd() {
-            
+            statements.push(self.parseStatement());
         }
+
+        Program {
+            statements
+        }
+    }
+
+    fn parseStatement(&mut self) -> Statement {
+        let current: &Token = self.peek(0).unwrap();
+
+        match current.tokenType {
+            // Keywords
+            TokenType::KeywordIf
+            | TokenType::KeywordElse
+            | TokenType::KeywordFor => {
+                self.parseKeyword()
+            }
+
+            // Block
+            _ => {}
+
+        }
+
+        Statement {}
+    }
+
+    fn parseKeyword(&self) {
+        todo!()
     }
 }
 

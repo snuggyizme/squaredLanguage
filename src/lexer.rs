@@ -1,4 +1,4 @@
-enum TokenType {
+pub enum TokenType {
     Identifier(String),
     Number(i64),
     String(String),
@@ -25,9 +25,9 @@ enum TokenType {
 
 #[allow(non_snake_case)]
 pub struct Token {
-    tokenType: TokenType,
-    line: usize,
-    column: usize,
+    pub tokenType: TokenType,
+    pub line: usize,
+    pub column: usize,
 }
 
 #[allow(non_snake_case)]
@@ -98,16 +98,7 @@ pub fn lex(source: &str) -> Vec<Token> {
                     }
 
                     // Quotation marks (' or ")
-                    '"' => {
-                        tokens.push(Token {
-                            tokenType: TokenType::QuotationMark,
-                            line: line,
-                            column: column
-                        });
-                        ptr += 1;
-                        column += 1;
-                    }
-                    '\'' => {
+                    '"' | '\'' => {
                         tokens.push(Token {
                             tokenType: TokenType::QuotationMark,
                             line: line,
@@ -305,18 +296,18 @@ pub fn printToken(token: &Token) {
         TokenType::String(value) => { println!("STRING: {value}") }
 
         // Symbols
-        TokenType::LeftParen => { println!("LEFT_PAREN") }
-        TokenType::RightParen => { println!("RIGHT_PAREN") }
-        TokenType::Dot => { println!("DOT") }
-        TokenType::Equals => { println!("EQUALS") }
-        TokenType::Semicolon => { println!("SEMICOLON") }
-        TokenType::QuotationMark => { println!("QUOTATION_MARK") }
-        TokenType::LeftSquareBracket => { println!("LEFT_SQUARE_BRACKET") }
-        TokenType::RightSquareBracket => { println!("RIGHT_SQUARE_BRACKET") }
-        TokenType::LeftCurlyBracket => { println!("LEFT_CURLY_BRACKET") }
-        TokenType::RightCurlyBracket => { println!("RIGHT_CURLY_BRACKET") }
-        TokenType::Comma => { println!("COMMA") }
-        TokenType::At => { println!("AT") }
+        TokenType::LeftParen => { println!("(") }
+        TokenType::RightParen => { println!(")") }
+        TokenType::Dot => { println!(".") }
+        TokenType::Equals => { println!("=") }
+        TokenType::Semicolon => { println!(";") }
+        TokenType::QuotationMark => { println!("\"") }
+        TokenType::LeftSquareBracket => { println!("[") }
+        TokenType::RightSquareBracket => { println!("]") }
+        TokenType::LeftCurlyBracket => { println!("{{") }
+        TokenType::RightCurlyBracket => { println!("}}") }
+        TokenType::Comma => { println!(",") }
+        TokenType::At => { println!("@") }
 
         // Keywords
         TokenType::KeywordIf => { println!("KEYWORD_IF") }
