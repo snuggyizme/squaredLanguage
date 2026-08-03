@@ -1,4 +1,4 @@
-use crate::lexer::{self, Token};
+use crate::lexer::Token;
 use crate::lexer::TokenType;
 
 pub struct Statement {
@@ -49,8 +49,20 @@ impl Parser {
                 self.parseKeyword()
             }
 
-            // Block
-            _ => {}
+            // Variable declaration
+            TokenType::Identifier(name) => {
+                let types: [String; 4] = [
+                    String::from("int"),
+                    String::from("str"),
+                    String::from("vec2"),
+                    String::from("range"),
+                ];
+
+                if types.contains(&name) {
+                    self.parseVariableDeclaration()
+                }
+                
+            }
 
         }
 
@@ -58,6 +70,10 @@ impl Parser {
     }
 
     fn parseKeyword(&self) {
+        todo!()
+    }
+
+    fn parseVariableDeclaration(&self) {
         todo!()
     }
 }
@@ -69,6 +85,5 @@ pub fn parse(tokens: Vec<Token>) {
         index: 0,
     };
     parser.parseProgram();
-
     
 }
