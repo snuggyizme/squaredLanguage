@@ -41,7 +41,7 @@ impl Parser {
     fn parseStatement(&mut self) -> Statement {
         let current: &Token = self.peek(0).unwrap();
 
-        match current.tokenType {
+        match &current.tokenType {
             // Keywords
             TokenType::KeywordIf
             | TokenType::KeywordElse
@@ -63,6 +63,8 @@ impl Parser {
                 }
                 
             } // This is to test my pushing ability // Dw we all know you're a great pusher :3
+
+            _ => {}
 
         }
 
