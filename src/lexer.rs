@@ -7,6 +7,16 @@ pub enum TokenType {
     RightParen,
     Dot,
     Equals,
+    PlusEquals,
+    MinusEquals,
+    TimesEquals,
+    DivEquals,
+    PowerEquals,
+    Plus,
+    Minus,
+    Times,
+    Div,
+    Power,
     Semicolon,
     QuotationMark,
     LeftSquareBracket,
@@ -86,7 +96,87 @@ pub fn lex(source: &str) -> Vec<Token> {
                         column += 1;
                     }
 
-                    // Semocolon
+                    // Plus & PlusEquals
+                    '+' => {
+                        let mut tokenType = TokenType::Plus;
+
+                        if nextChar == Some('=') {
+                            tokenType = TokenType::PlusEquals
+                        }
+
+                        tokens.push(Token {
+                            tokenType: tokenType,
+                            line: line,
+                            column: column
+                        })
+                    }
+
+                    // Minus & MinusEquals
+                    '-' => {
+                        let mut tokenType = TokenType::Minus;
+
+                        if getChar(source, ptr + 1) == Some('=') {
+                            tokenType = TokenType::MinusEquals
+                        }
+
+                        tokens.push(Token {
+                            tokenType: tokenType,
+                            line: line,
+                            column: column
+                        })
+                    }
+
+                    // Times and TimesEquals (!! Conflicts with pointer "*" !!)
+                    '*' => {
+                        let mut tokenType = TokenType::Plus;
+
+                        if getChar(source, ptr + 1) == Some('=') {
+                            tokenType = TokenType::PlusEquals
+                        }
+
+                        tokens.push(Token {
+                            tokenType: tokenType,
+                            line: line,
+                            column: column
+                        })
+                    }
+
+                    // Div and DivEquals
+                    '/' => {
+                        let mut tokenType = TokenType::Plus;
+
+                        if getChar(source, ptr + 1) == Some('=') {
+                            tokenType = TokenType::PlusEquals
+                        }
+
+                        tokens.push(Token {
+                            tokenType: tokenType,
+                            line: line,
+                            column: column
+                        })
+                        
+                    }
+
+                    // Power and PowerEquals
+                    '*' => {
+                        let mut tokenType = TokenType::Plus;
+
+                        if getChar(source, ptr + 1) == Some('*') {
+                            if getChar(source, ptr + 2) == Some('=') {
+                                tokenType = TokenType::PlusEquals
+                            }
+                            else {
+                            }
+                        }
+
+                        tokens.push(Token {
+                            tokenType: tokenType,
+                            line: line,
+                            column: column
+                        })
+                    }
+
+                    // Semicolon
                     ';' => {
                         tokens.push(Token {
                             tokenType: TokenType::Semicolon,
@@ -317,4 +407,8 @@ pub fn printToken(token: &Token) {
         // End of file
         TokenType::EOF => { println!("EOF") }
     }
+}
+
+fn getChar(source: &str, index: usize) -> Option<char> {
+    source.chars().nth(index)
 }

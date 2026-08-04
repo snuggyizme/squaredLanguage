@@ -61,6 +61,8 @@ impl Parser {
                 if types.contains(&name) {
                     self.parseVariableDeclaration()
                 }
+
+                if self.peek(1)
                 
             } // This is to test my pushing ability // Dw we all know you're a great pusher :3
 
